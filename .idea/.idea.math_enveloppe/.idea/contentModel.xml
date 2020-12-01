@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\pim10\.Rider2019.2\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\pim10\.Rider2019.2\system\resharper-host\local\Transient\ReSharperHost\v192\SolutionCaches\_math_enveloppe.770083483.00" t="ExcludeRecursive" />
+    <e p="D:\OneDrive\Documents\ESGI_5eme_annee\Math\math_enveloppe" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Scripts" t="Include">
+          <e p="Controller.cs" t="Include" />
+          <e p="GrahamScan" t="Include">
+            <e p="GrahamScanScript.cs" t="Include" />
+          </e>
+          <e p="Jarvis" t="Include">
+            <e p="JarvisScript.cs" t="Include" />
+          </e>
+          <e p="Triangulation" t="Include">
+            <e p="IncrementalTriangulation.cs" t="Include" />
+          </e>
+          <e p="Utils" t="Include">
+            <e p="Edge.cs" t="Include" />
+            <e p="MathUtils.cs" t="Include" />
+            <e p="Point.cs" t="Include" />
+            <e p="Triangle.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="math_enveloppe.sln" t="IncludeFlat" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="Packages" t="ExcludeRecursive" />
+      <e p="Temp\bin" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
