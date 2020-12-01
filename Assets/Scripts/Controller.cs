@@ -15,13 +15,15 @@ public class Controller : MonoBehaviour
 
     [SerializeField] private bool jarvis;
     [SerializeField] private bool graham;
-    [SerializeField] private bool incrementalTriangulation;
+    [SerializeField] private bool incrementalTriangulationBool;
     [SerializeField] private bool delaunay;
     [SerializeField] private bool voronoi;
 
     [SerializeField] private int nbPoints = 100;
 
     private List<Point> currentPointsInScene;
+
+    private IncrementalTriangulation incrementalTriangulation;
     
     // Start is called before the first frame update
     void Start()
@@ -54,7 +56,7 @@ public class Controller : MonoBehaviour
             DrawGraham();
         }
 
-        if (incrementalTriangulation)
+        if (incrementalTriangulationBool)
         {
             DrawIncrementalTriangulation();
         }
@@ -84,7 +86,11 @@ public class Controller : MonoBehaviour
 
     private void DrawIncrementalTriangulation()
     {
-        IncrementalTriangulation incrementalTriangulation = new IncrementalTriangulation(currentPointsInScene);
+        incrementalTriangulation = new IncrementalTriangulation(currentPointsInScene);
+        if (delaunay)
+        {
+            incrementalTriangulation.flipping = true;
+        }
         DrawEdge(incrementalTriangulation.ComputeAndGetEdges());
     }
     
