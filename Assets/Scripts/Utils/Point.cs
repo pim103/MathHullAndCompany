@@ -28,6 +28,12 @@ namespace Utils
         {
             return position;
         }
+        public void SetPosition(float x, float y, float z)
+        {
+            position.x = x;
+            position.y = y;
+            position.z = z;
+        }
 
         public void SetGameObjectName(string name)
         {

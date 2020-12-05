@@ -266,7 +266,7 @@ MonoBehaviour:
   incrementalTriangulationBool: 1
   delaunay: 1
   voronoi: 0
-  nbPoints: 20
+  nbPoints: 10
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
