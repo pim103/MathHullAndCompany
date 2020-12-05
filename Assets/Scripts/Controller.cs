@@ -138,6 +138,15 @@ public class Controller : MonoBehaviour
             return;
         }
 
+        for (int i = 0; i < incrementalTriangulation.centers.Count; ++i)
+        {
+            GameObject centerObject = Instantiate(point,incrementalTriangulation.centers[i].GetPosition(),Quaternion.identity);
+            //centerObject.GetComponent<Material>().color = Color.blue;
+            centerObject.AddComponent<CircleCollider2D>();
+            CircleCollider2D circleCollider2D = centerObject.GetComponent<CircleCollider2D>();
+            Debug.Log(incrementalTriangulation.radiuses[i]);
+            circleCollider2D.radius = incrementalTriangulation.radiuses[i];
+        }
 
         foreach (Edge eachEdge in calculatedEdge)
         {

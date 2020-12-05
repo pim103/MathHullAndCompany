@@ -263,10 +263,10 @@ MonoBehaviour:
   is3D: 0
   jarvis: 0
   graham: 0
-  incrementalTriangulation: 1
-  delaunay: 0
+  incrementalTriangulationBool: 1
+  delaunay: 1
   voronoi: 0
-  nbPoints: 50
+  nbPoints: 20
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
