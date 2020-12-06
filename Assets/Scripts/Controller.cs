@@ -13,6 +13,7 @@ public class Controller : MonoBehaviour
 
     [SerializeField] private bool is3D;
 
+    [SerializeField] private bool generatePoints;
     [SerializeField] private bool jarvis;
     [SerializeField] private bool graham;
     [SerializeField] private bool incrementalTriangulationBool;
@@ -21,7 +22,8 @@ public class Controller : MonoBehaviour
 
     [SerializeField] private int nbPoints = 100;
 
-    private List<Point> currentPointsInScene;
+    public static List<Point> currentPointsInScene;
+    private List<GameObject> goInScene;
 
     private IncrementalTriangulation incrementalTriangulation;
     
@@ -29,22 +31,18 @@ public class Controller : MonoBehaviour
     void Start()
     {
         currentPointsInScene = new List<Point>();
+        goInScene = new List<GameObject>();
 
-        RunAlgoWithParameter();
-
-//        Edge edge = new Edge
-//        {
-//            p1 = new Point(Vector3.right),
-//            p2 = new Point(Vector3.right * 10)
-//        };
-        
-//        Debug.Log(edge.GetNormal());
-//        DrawOneEdge(edge);
+//        RunAlgoWithParameter();
     }
 
-    private void RunAlgoWithParameter()
+    public void RunAlgoWithParameter()
     {
-        GeneratePointCloud();
+        if (generatePoints)
+        {
+            ClearScene();
+            GeneratePointCloud();
+        }
 
         if (jarvis)
         {
@@ -81,6 +79,7 @@ public class Controller : MonoBehaviour
 
             ob.transform.position = pos;
             currentPointsInScene.Add(new Point(ob));
+            goInScene.Add(ob);
         }
     }
 
@@ -116,6 +115,7 @@ public class Controller : MonoBehaviour
         for (int i = 0; i < calculatedPoint.Count; ++i)
         {
             GameObject seg = Instantiate(segment);
+            goInScene.Add(seg);
 
             int nextIndex = (i + 1) % calculatedPoint.Count;
 
@@ -138,14 +138,18 @@ public class Controller : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < incrementalTriangulation.centers.Count; ++i)
+        if (delaunay)
         {
-            GameObject centerObject = Instantiate(point,incrementalTriangulation.centers[i].GetPosition(),Quaternion.identity);
-            //centerObject.GetComponent<Material>().color = Color.blue;
-            centerObject.AddComponent<CircleCollider2D>();
-            CircleCollider2D circleCollider2D = centerObject.GetComponent<CircleCollider2D>();
-            Debug.Log(incrementalTriangulation.radiuses[i]);
-            circleCollider2D.radius = incrementalTriangulation.radiuses[i];
+            for (int i = 0; i < incrementalTriangulation.centers.Count; ++i)
+            {
+                GameObject centerObject = Instantiate(point,incrementalTriangulation.centers[i].GetPosition(),Quaternion.identity);
+                goInScene.Add(centerObject);
+                //centerObject.GetComponent<Material>().color = Color.blue;
+                centerObject.AddComponent<CircleCollider2D>();
+                CircleCollider2D circleCollider2D = centerObject.GetComponent<CircleCollider2D>();
+                Debug.Log(incrementalTriangulation.radiuses[i]);
+                circleCollider2D.radius = incrementalTriangulation.radiuses[i];
+            }
         }
 
         foreach (Edge eachEdge in calculatedEdge)
@@ -158,6 +162,7 @@ public class Controller : MonoBehaviour
     {
         bool drawNormale = false;
         GameObject seg = Instantiate(segment);
+        goInScene.Add(seg);
 
         Vector3 pos = (edge.p1.GetPosition() + edge.p2.GetPosition())/2;
         seg.transform.rotation = Quaternion.LookRotation(edge.p1.GetPosition() - edge.p2.GetPosition(), Vector3.up);
@@ -187,7 +192,7 @@ public class Controller : MonoBehaviour
         }
     }
 
-    private void ClearScene()
+    public void ClearScene()
     {
         while (currentPointsInScene.Count > 0)
         {
@@ -195,5 +200,24 @@ public class Controller : MonoBehaviour
             go.SetActive(false);
             currentPointsInScene.RemoveAt(0);
         }
+
+        while (goInScene.Count > 0)
+        {
+            Destroy(goInScene[0]);
+            goInScene.RemoveAt(0);
+        }
+        
+        currentPointsInScene.Clear();
+        goInScene.Clear();
+    }
+
+    public void AddPoint(Vector3 position)
+    {
+        GameObject go = Instantiate(point);
+        go.transform.position = position;
+        Point p = new Point(go);
+
+        currentPointsInScene.Add(p);
+        goInScene.Add(go);
     }
 }

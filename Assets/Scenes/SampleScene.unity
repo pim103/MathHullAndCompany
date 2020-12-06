@@ -225,6 +225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 754977257}
   - component: {fileID: 754977258}
+  - component: {fileID: 754977259}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -261,12 +262,26 @@ MonoBehaviour:
   point: {fileID: 7309468801842498402, guid: 68395e457a9c0ec4db0fd888a344804b, type: 3}
   segment: {fileID: 2053228795446049584, guid: 4160403287fa24c478bcaef688d7b7c5, type: 3}
   is3D: 0
+  generatePoints: 0
   jarvis: 0
   graham: 0
   incrementalTriangulationBool: 1
   delaunay: 1
   voronoi: 0
   nbPoints: 10
+--- !u!114 &754977259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754977256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad094a639f48ca5428c7797e0341fc90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 754977258}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +377,7 @@ GameObject:
   - component: {fileID: 1581592813}
   - component: {fileID: 1581592812}
   - component: {fileID: 1581592811}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
