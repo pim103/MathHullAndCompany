@@ -11,6 +11,9 @@
           <e p="GrahamScan" t="Include">
             <e p="GrahamScanScript.cs" t="Include" />
           </e>
+          <e p="IncrementalHull3D" t="Include">
+            <e p="IncrementalHull3DScript.cs" t="Include" />
+          </e>
           <e p="Jarvis" t="Include">
             <e p="JarvisScript.cs" t="Include" />
           </e>
@@ -25,6 +28,9 @@
             <e p="MathUtils.cs" t="Include" />
             <e p="Point.cs" t="Include" />
             <e p="Triangle.cs" t="Include" />
+          </e>
+          <e p="Voronoi" t="Include">
+            <e p="VoronoiScript.cs" t="Include" />
           </e>
         </e>
       </e>

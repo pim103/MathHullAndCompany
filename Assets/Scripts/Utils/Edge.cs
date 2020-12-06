@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Utils
@@ -24,6 +25,43 @@ namespace Utils
             normal.y = -normalised.x;
 
             return normal;
+        }
+        
+        public Edge FindSameEdges(List<Edge> edges)
+        {
+            Edge findEdge = edges.Find(
+                eachEdge => 
+                    (eachEdge.p1 == p1 || eachEdge.p2 == p1) && 
+                    (eachEdge.p1 == p2 || eachEdge.p2 == p2));
+
+            return findEdge;
+        }
+
+        public int GetNbTriangleContainingEdge(List<Triangle> triangles)
+        {
+            return GetTriangleContainingEdge(triangles).Count;
+        }
+        
+        public List<Triangle> GetTriangleContainingEdge(List<Triangle> triangles)
+        {
+            List<Triangle> trianglesContainingEdge = triangles.FindAll(triangle => 
+                (p1.GetPosition() == triangle.p1.GetPosition() || p1.GetPosition() == triangle.p2.GetPosition() || p1.GetPosition() == triangle.p3.GetPosition()) && 
+                (p2.GetPosition() == triangle.p1.GetPosition() || p2.GetPosition() == triangle.p2.GetPosition() || p2.GetPosition() == triangle.p3.GetPosition()));
+
+            return trianglesContainingEdge;
+        }
+
+        public Vector3 GetCenter()
+        {
+            Vector3 center = Vector3.zero;
+            Vector3 pos1 = p1.GetPosition();
+            Vector3 pos2 = p2.GetPosition();
+
+            center.x = (pos1.x + pos2.x) / 2;
+            center.y = (pos1.y + pos2.y) / 2;
+            center.z = (pos1.z + pos2.z) / 2;
+
+            return center;
         }
     }
 }
