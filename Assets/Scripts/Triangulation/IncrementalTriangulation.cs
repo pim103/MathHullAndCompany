@@ -177,15 +177,13 @@ namespace Triangulation
             List<Edge> activeEdges = edges.FindAll(e => e.isActive == false);
             List<Edge> edgesToFlip = new List<Edge>(activeEdges);
             Edge currentEdge;
-            bool firstTriangleInSecondCircle;
-            bool secondTriangleInFirstCircle;
             Debug.Log("triangles " + triangles.Count);
             while(edgesToFlip.Count > 0)
             {
                 currentEdge = edgesToFlip[0];
                 edgesToFlip.Remove(currentEdge);
-                firstTriangleInSecondCircle = false;
-                secondTriangleInFirstCircle = false;
+                var firstTriangleInSecondCircle = false;
+                var secondTriangleInFirstCircle = false;
                 List<Triangle> trianglesWithCurrentEdge = triangles.FindAll(triangle => 
                     (currentEdge.p1.GetPosition() == triangle.p1.GetPosition() || currentEdge.p1.GetPosition() == triangle.p2.GetPosition() || currentEdge.p1.GetPosition() == triangle.p3.GetPosition()) && (currentEdge.p2.GetPosition() == triangle.p1.GetPosition() || currentEdge.p2.GetPosition() == triangle.p2.GetPosition() || currentEdge.p2.GetPosition() == triangle.p3.GetPosition()) /*&& 
                                                                                         triangle.p1 != triangle.p2 && triangle.p1 != triangle.p3 && triangle.p2 != triangle.p3 &&
@@ -234,6 +232,9 @@ namespace Triangulation
                     centers.Add(new Point(secondCenter));
                     radiuses.Add(secondRadius/2);
                     
+                    /*firstTriangleInSecondCircle = true;
+                    secondTriangleInFirstCircle = true;*/
+                    
                     Debug.Log("triangle debug : first triangle " + secondRadius + " " + Vector3.Distance(trianglesWithCurrentEdge[0].p1.GetPosition(),secondCenter) + " " + Vector3.Distance(trianglesWithCurrentEdge[0].p2.GetPosition(),secondCenter) + " " + Vector3.Distance(trianglesWithCurrentEdge[0].p3.GetPosition(),secondCenter));
                     if(Vector3.Distance(trianglesWithCurrentEdge[0].p1.GetPosition(),secondCenter) <= secondRadius && Vector3.Distance(trianglesWithCurrentEdge[0].p2.GetPosition(),secondCenter) <= secondRadius && Vector3.Distance(trianglesWithCurrentEdge[0].p3.GetPosition(),secondCenter) <= secondRadius)
                     {
@@ -252,7 +253,7 @@ namespace Triangulation
                     {
                         Debug.Log("ShouldFlip");
                         Debug.Log(currentEdge.p1.GetPosition() + " " + currentEdge.p2.GetPosition());
-                        edgesDuplicateList.Remove(currentEdge);
+                        edges.Remove(currentEdge);
                         triangles.Remove(trianglesWithCurrentEdge[0]);
                         triangles.Remove(trianglesWithCurrentEdge[1]);
                         
@@ -293,7 +294,7 @@ namespace Triangulation
                             Debug.Log("edge2_3" + edgeP2.GetPosition() + " " + currentEdge.p1.GetPosition() + " " + currentEdge.p2.GetPosition());
                         }
                         Edge newEdge = new Edge(edgeP1,edgeP2);
-                        edgesDuplicateList.Add(newEdge);
+                        edges.Add(newEdge);
                         //edgesToFlip.Add(newEdge);
                         /*Point trianglePoint = null;
                         if (edgeP1 != trianglesWithCurrentEdge[0].p1 &&
@@ -357,7 +358,7 @@ namespace Triangulation
                 }
             }
 
-            /*foreach (var edge in edgesDuplicateList)
+            /*foreach (var edge in edges)
             {
                 edge.p1.SetPosition(edge.p1.GetPosition().x,edge.p1.GetPosition().y+100,edge.p1.GetPosition().z);
                 edge.p2.SetPosition(edge.p2.GetPosition().x,edge.p2.GetPosition().y+100,edge.p2.GetPosition().z);

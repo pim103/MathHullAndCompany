@@ -33,6 +33,7 @@ namespace Utils
             position.x = x;
             position.y = y;
             position.z = z;
+            objectInScene.transform.position = position;
         }
 
         public void SetGameObjectName(string name)
