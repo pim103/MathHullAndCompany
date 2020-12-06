@@ -273,14 +273,11 @@ namespace Triangulation
                             edgeP2 = trianglesWithCurrentEdge[1].p3;
                             Debug.Log("edge2_3" + edgeP2.GetPosition() + " " + currentEdge.p1.GetPosition() + " " + currentEdge.p2.GetPosition());
                         }
-                        Edge newEdge = new Edge(edgeP1,edgeP2);
-                        edges.Add(newEdge);
+//                        edges.Add(newEdge);
                         
-                        Triangle newTriangle = new Triangle(edgeP1, edgeP2, currentEdge.p1);
-                        triangles.Add(newTriangle);
-                        Triangle newTriangle2 = new Triangle(edgeP2, edgeP1, currentEdge.p2);
-                        triangles.Add(newTriangle2);
-                        Debug.Log("hasFlipped " + newEdge.p1.GetPosition() + " "+newEdge.p2.GetPosition());
+                        Edge newEdge = new Edge(edgeP1,edgeP2);
+                        AddNewTriangle(newEdge, currentEdge.p1);
+                        AddNewTriangle(newEdge, currentEdge.p2);
                     }
                 }
             }
