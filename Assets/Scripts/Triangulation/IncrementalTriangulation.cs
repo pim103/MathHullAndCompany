@@ -141,7 +141,7 @@ namespace Triangulation
 
             return vector;
         }
-        
+
         public static Vector3 CircleCenter(Vector3 aP0, Vector3 aP1, Vector3 aP2)
         {
             // two circle chords
@@ -173,11 +173,10 @@ namespace Triangulation
         {
             centers = new List<Point>();
             radiuses = new List<float>();
-            List<Edge> edgesDuplicateList = new List<Edge>(edges);
             List<Edge> activeEdges = edges.FindAll(e => e.isActive == false);
             List<Edge> edgesToFlip = new List<Edge>(activeEdges);
             Edge currentEdge;
-            Debug.Log("triangles " + triangles.Count);
+
             while(edgesToFlip.Count > 0)
             {
                 currentEdge = edgesToFlip[0];
@@ -185,30 +184,11 @@ namespace Triangulation
                 var firstTriangleInSecondCircle = false;
                 var secondTriangleInFirstCircle = false;
                 List<Triangle> trianglesWithCurrentEdge = triangles.FindAll(triangle => 
-                    (currentEdge.p1.GetPosition() == triangle.p1.GetPosition() || currentEdge.p1.GetPosition() == triangle.p2.GetPosition() || currentEdge.p1.GetPosition() == triangle.p3.GetPosition()) && (currentEdge.p2.GetPosition() == triangle.p1.GetPosition() || currentEdge.p2.GetPosition() == triangle.p2.GetPosition() || currentEdge.p2.GetPosition() == triangle.p3.GetPosition()) /*&& 
-                                                                                        triangle.p1 != triangle.p2 && triangle.p1 != triangle.p3 && triangle.p2 != triangle.p3 &&
-                                                                                        currentEdge.p1 != currentEdge.p2*/);
-                Triangle oneTriangle = triangles.Find(triangle => 
                     (currentEdge.p1.GetPosition() == triangle.p1.GetPosition() || currentEdge.p1.GetPosition() == triangle.p2.GetPosition() || currentEdge.p1.GetPosition() == triangle.p3.GetPosition()) && 
                     (currentEdge.p2.GetPosition() == triangle.p1.GetPosition() || currentEdge.p2.GetPosition() == triangle.p2.GetPosition() || currentEdge.p2.GetPosition() == triangle.p3.GetPosition()));
-                if (oneTriangle != null)
-                {
-                    Debug.Log("yes");
-                }
-                Debug.Log("edges " + trianglesWithCurrentEdge.Count);
-                if (trianglesWithCurrentEdge.Count < 2)
-                {
-                    Debug.Log(edgesToFlip.Count + "wesh");
-                }
-                else if(trianglesWithCurrentEdge.Count > 2)
-                {
-                    Debug.Log("IMPOSSIBLE " + trianglesWithCurrentEdge.Count);
-                    break;
-                }
-                else
-                {
-                    Debug.Log(edgesToFlip.Count + " bon ");
 
+                if (trianglesWithCurrentEdge.Count == 2)
+                {
                     Vector3 p1Pos = trianglesWithCurrentEdge[0].p1.GetPosition();
                     Vector3 p2Pos = trianglesWithCurrentEdge[0].p2.GetPosition();
                     Vector3 p3Pos = trianglesWithCurrentEdge[0].p3.GetPosition();
@@ -295,59 +275,6 @@ namespace Triangulation
                         }
                         Edge newEdge = new Edge(edgeP1,edgeP2);
                         edges.Add(newEdge);
-                        //edgesToFlip.Add(newEdge);
-                        /*Point trianglePoint = null;
-                        if (edgeP1 != trianglesWithCurrentEdge[0].p1 &&
-                            edgeP2 != trianglesWithCurrentEdge[0].p1)
-                        {
-                            trianglePoint = trianglesWithCurrentEdge[0].p1;
-                        } else if (edgeP1 != trianglesWithCurrentEdge[0].p2 &&
-                                   edgeP2 != trianglesWithCurrentEdge[0].p2)
-                        {
-                            trianglePoint = trianglesWithCurrentEdge[0].p2;
-                        }
-                        else if (edgeP1 != trianglesWithCurrentEdge[0].p3 &&
-                                 edgeP1 != trianglesWithCurrentEdge[0].p3)
-                        {
-                            trianglePoint = trianglesWithCurrentEdge[0].p3;
-                        }
-
-                        if (trianglePoint != null)
-                        {
-                            Triangle newTriangle1 = new Triangle(edgeP1, trianglePoint, edgeP2);
-                            triangles.Add(newTriangle1);
-                            Debug.Log("yes");
-                        }
-                        else
-                        {
-                            Debug.Log("full merde");
-                        }
-
-                        trianglePoint = null;
-                        if (edgeP1 != trianglesWithCurrentEdge[1].p1 &&
-                            edgeP2 != trianglesWithCurrentEdge[1].p1)
-                        {
-                            trianglePoint = trianglesWithCurrentEdge[1].p1;
-                        } else if (edgeP1 != trianglesWithCurrentEdge[1].p2 &&
-                                   edgeP2 != trianglesWithCurrentEdge[1].p2)
-                        {
-                            trianglePoint = trianglesWithCurrentEdge[1].p2;
-                        }
-                        else if (edgeP1 != trianglesWithCurrentEdge[1].p3 &&
-                                 edgeP1 != trianglesWithCurrentEdge[1].p3)
-                        {
-                            trianglePoint = trianglesWithCurrentEdge[1].p3;
-                        }
-
-                        if (trianglePoint != null)
-                        {
-                            Triangle newTriangle2 = new Triangle(edgeP2, trianglePoint, edgeP1);
-                            triangles.Add(newTriangle2);
-                        }
-                        else
-                        {
-                            Debug.Log("full merdeux");
-                        }*/
                         
                         Triangle newTriangle = new Triangle(edgeP1, edgeP2, currentEdge.p1);
                         triangles.Add(newTriangle);
@@ -357,13 +284,6 @@ namespace Triangulation
                     }
                 }
             }
-
-            /*foreach (var edge in edges)
-            {
-                edge.p1.SetPosition(edge.p1.GetPosition().x,edge.p1.GetPosition().y+100,edge.p1.GetPosition().z);
-                edge.p2.SetPosition(edge.p2.GetPosition().x,edge.p2.GetPosition().y+100,edge.p2.GetPosition().z);
-            }*/
-            //edges.AddRange(edgesDuplicateList);
         }
     }
 }
