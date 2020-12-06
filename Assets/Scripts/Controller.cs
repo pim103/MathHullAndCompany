@@ -213,6 +213,7 @@ public class Controller : MonoBehaviour
 
     public void AddPoint(Vector3 position)
     {
+        position.z = 0;
         GameObject go = Instantiate(point);
         go.transform.position = position;
         Point p = new Point(go);
