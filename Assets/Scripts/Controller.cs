@@ -29,6 +29,8 @@ public class Controller : MonoBehaviour
     private List<GameObject> goInScene;
 
     private IncrementalTriangulation incrementalTriangulation;
+
+    private static Controller instance;
     
     // Start is called before the first frame update
     void Start()
@@ -36,6 +38,7 @@ public class Controller : MonoBehaviour
         currentPointsInScene = new List<Point>();
         goInScene = new List<GameObject>();
 
+        instance = this;
 //        RunAlgoWithParameter();
     }
 
@@ -56,10 +59,11 @@ public class Controller : MonoBehaviour
             IncrementalHull3DScript ic3d = new IncrementalHull3DScript(currentPointsInScene);
             List<Triangle> faces = ic3d.Compute3DHull();
 
-            foreach (Triangle face in faces)
-            {
-                DrawEdge(face.GetEdges());
-            }
+            DrawTriangles(faces);
+//            foreach (Triangle face in faces)
+//            {
+//                DrawEdge(face.GetEdges(), face.isActive);
+//            }
         }
         else
         {
@@ -193,6 +197,46 @@ public class Controller : MonoBehaviour
         }
     }
 
+    private void DrawTriangles(List<Triangle> triangles)
+    {
+        bool drawNormale = true;
+        List<Edge> edges = new List<Edge>();
+        
+        triangles.ForEach(t =>
+        {
+            List<Edge> edgesInTriangle = t.GetEdges();
+            edgesInTriangle.ForEach(edge =>
+            {
+                if (edge.FindSameEdges(edges) == null)
+                {
+                    edges.Add(edge);
+                }
+            });
+            
+            
+            if (drawNormale)
+            {
+                Vector3 normale = t.normale;
+                GameObject seg = Instantiate(segment);
+                goInScene.Add(seg);
+
+                Vector3 pos = t.interCenter.GetPosition();
+                seg.transform.rotation = Quaternion.LookRotation(normale, Vector3.up);
+                seg.transform.Rotate(Vector3.right * 90);
+
+                pos += normale;
+                Vector3 localScale = Vector3.one;
+                localScale.y = 2;
+                seg.transform.localScale = localScale;
+
+                seg.transform.position = pos;
+            }
+        });
+        
+        DrawEdge(edges);
+
+    }
+    
     private void DrawOneEdge(Edge edge, bool drawWithVoronoiColor = false, int offsetZ = 0)
     {
         bool drawNormale = false;
@@ -259,6 +303,18 @@ public class Controller : MonoBehaviour
         goInScene.Clear();
     }
 
+    public static Point AddPoint(Vector3 position)
+    {
+        GameObject go = Instantiate(instance.point);
+        go.transform.position = position;
+        Point p = new Point(go);
+
+        currentPointsInScene.Add(p);
+        instance.goInScene.Add(go);
+
+        return p;
+    }
+    
     public void AddPoint(Vector3 position, float posZ = 0)
     {
         position.z = posZ;

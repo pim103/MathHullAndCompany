@@ -162,29 +162,29 @@ namespace Triangulation
                     Vector3 secondCenter = trianglesWithCurrentEdge[1].center.GetPosition();
                     float secondRadius = Vector3.Distance(trianglesWithCurrentEdge[1].p1.GetPosition(),secondCenter);
 
-                    Debug.Log("triangle debug : first triangle point : " +
-                              trianglesWithCurrentEdge[0].p1.GetPosition().x + " " +
-                              trianglesWithCurrentEdge[0].p1.GetPosition().y + " " +
-                              trianglesWithCurrentEdge[0].p2.GetPosition().x + " " +
-                              trianglesWithCurrentEdge[0].p2.GetPosition().y + " " +
-                              trianglesWithCurrentEdge[0].p3.GetPosition().x + " " +
-                              trianglesWithCurrentEdge[0].p3.GetPosition().y + " " +
-                              " radiusOtherTriangle : " + secondRadius + " dist : " + 
-                              Vector3.Distance(trianglesWithCurrentEdge[0].p1.GetPosition(),secondCenter) + " " + 
-                              Vector3.Distance(trianglesWithCurrentEdge[0].p2.GetPosition(),secondCenter) + " " + 
-                              Vector3.Distance(trianglesWithCurrentEdge[0].p3.GetPosition(),secondCenter));
-
-                    Debug.Log("triangle debug : second triangle point : " +
-                              trianglesWithCurrentEdge[1].p1.GetPosition().x + " " +
-                              trianglesWithCurrentEdge[1].p1.GetPosition().y + " " +
-                              trianglesWithCurrentEdge[1].p2.GetPosition().x + " " +
-                              trianglesWithCurrentEdge[1].p2.GetPosition().y + " " +
-                              trianglesWithCurrentEdge[1].p3.GetPosition().x + " " +
-                              trianglesWithCurrentEdge[1].p3.GetPosition().y + " " +
-                              " radiusOtherTriangle : " + firstRadius + " " + 
-                              Vector3.Distance(trianglesWithCurrentEdge[1].p1.GetPosition(),firstCenter) + " " + 
-                              Vector3.Distance(trianglesWithCurrentEdge[1].p2.GetPosition(),firstCenter) + " " + 
-                              Vector3.Distance(trianglesWithCurrentEdge[1].p3.GetPosition(),firstCenter));
+//                    Debug.Log("triangle debug : first triangle point : " +
+//                              trianglesWithCurrentEdge[0].p1.GetPosition().x + " " +
+//                              trianglesWithCurrentEdge[0].p1.GetPosition().y + " " +
+//                              trianglesWithCurrentEdge[0].p2.GetPosition().x + " " +
+//                              trianglesWithCurrentEdge[0].p2.GetPosition().y + " " +
+//                              trianglesWithCurrentEdge[0].p3.GetPosition().x + " " +
+//                              trianglesWithCurrentEdge[0].p3.GetPosition().y + " " +
+//                              " radiusOtherTriangle : " + secondRadius + " dist : " + 
+//                              Vector3.Distance(trianglesWithCurrentEdge[0].p1.GetPosition(),secondCenter) + " " + 
+//                              Vector3.Distance(trianglesWithCurrentEdge[0].p2.GetPosition(),secondCenter) + " " + 
+//                              Vector3.Distance(trianglesWithCurrentEdge[0].p3.GetPosition(),secondCenter));
+//
+//                    Debug.Log("triangle debug : second triangle point : " +
+//                              trianglesWithCurrentEdge[1].p1.GetPosition().x + " " +
+//                              trianglesWithCurrentEdge[1].p1.GetPosition().y + " " +
+//                              trianglesWithCurrentEdge[1].p2.GetPosition().x + " " +
+//                              trianglesWithCurrentEdge[1].p2.GetPosition().y + " " +
+//                              trianglesWithCurrentEdge[1].p3.GetPosition().x + " " +
+//                              trianglesWithCurrentEdge[1].p3.GetPosition().y + " " +
+//                              " radiusOtherTriangle : " + firstRadius + " " + 
+//                              Vector3.Distance(trianglesWithCurrentEdge[1].p1.GetPosition(),firstCenter) + " " + 
+//                              Vector3.Distance(trianglesWithCurrentEdge[1].p2.GetPosition(),firstCenter) + " " + 
+//                              Vector3.Distance(trianglesWithCurrentEdge[1].p3.GetPosition(),firstCenter));
 
                     if(Vector3.Distance(trianglesWithCurrentEdge[0].p1.GetPosition(),secondCenter) <= secondRadius + EPSILON &&
                        Vector3.Distance(trianglesWithCurrentEdge[0].p2.GetPosition(),secondCenter) <= secondRadius + EPSILON &&
@@ -209,7 +209,6 @@ namespace Triangulation
                         Point edgeP1 = null;
                         Point edgeP2 = null;
 
-                        Debug.Log("Should flip");
                         if (currentEdge.p1.GetPosition() != trianglesWithCurrentEdge[0].p1.GetPosition() &&
                             currentEdge.p2.GetPosition() != trianglesWithCurrentEdge[0].p1.GetPosition())
                         {

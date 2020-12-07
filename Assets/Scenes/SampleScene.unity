@@ -269,7 +269,7 @@ MonoBehaviour:
   incrementalTriangulationBool: 0
   delaunay: 0
   voronoi: 0
-  nbPoints: 10
+  nbPoints: 5
 --- !u!114 &754977259
 MonoBehaviour:
   m_ObjectHideFlags: 0
