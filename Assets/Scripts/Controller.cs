@@ -48,10 +48,6 @@ public class Controller : MonoBehaviour
         {
             ClearScene();
             GeneratePointCloud();
-//            AddPoint(Vector3.zero + Vector3.right * -34 + Vector3.up * -17, 0);
-//            AddPoint(Vector3.zero + Vector3.right * -5 + Vector3.up * -30, 5);
-//            AddPoint(Vector3.zero + Vector3.right * 1 + Vector3.up * -11, 15);
-//            AddPoint(Vector3.zero + Vector3.right * -15 + Vector3.up * 15, -20);
         }
 
         if (is3D)
@@ -60,10 +56,6 @@ public class Controller : MonoBehaviour
             List<Triangle> faces = ic3d.Compute3DHull();
 
             DrawTriangles(faces);
-//            foreach (Triangle face in faces)
-//            {
-//                DrawEdge(face.GetEdges(), face.isActive);
-//            }
         }
         else
         {
@@ -117,7 +109,7 @@ public class Controller : MonoBehaviour
 
         List<Edge> delaunayEdges = incrementalTriangulation.ComputeAndGetEdges();
 
-        if (delaunay)
+        if (delaunay || incrementalTriangulationBool)
         {
             DrawEdge(delaunayEdges);
         }
