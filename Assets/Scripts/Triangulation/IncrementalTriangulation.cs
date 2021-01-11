@@ -138,7 +138,9 @@ namespace Triangulation
             edgesToFlip = edges.FindAll(e => e.isActive == false);
             Edge currentEdge;
 
-            while(edgesToFlip.Count > 0)
+            int safeLoopIteration = 0;
+
+            while(edgesToFlip.Count > 0 && (++safeLoopIteration) < 10000)
             {
                 currentEdge = edgesToFlip[0];
                 edgesToFlip.Remove(currentEdge);

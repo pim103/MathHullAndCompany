@@ -22,6 +22,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private bool incrementalTriangulationBool;
     [SerializeField] private bool delaunay;
     [SerializeField] private bool voronoi;
+    [SerializeField] private bool showCenterDelaunay;
 
     [SerializeField] private int nbPoints = 100;
 
@@ -81,6 +82,7 @@ public class Controller : MonoBehaviour
         for (int i = 0; i < nbPoints; ++i)
         {
             GameObject ob = Instantiate(point);
+            ob.name = "Medh" + i + "_PoinG";
 
             Vector3 pos = new Vector3();
             pos.x = Random.Range(-50, 50);
@@ -166,13 +168,14 @@ public class Controller : MonoBehaviour
             return;
         }
 
-        if (delaunay)
+        if (showCenterDelaunay && (delaunay || voronoi))
         {
             if (incrementalTriangulation.centers != null)
             {
                 for (int i = 0; i < incrementalTriangulation.centers.Count; ++i)
                 {
                     GameObject centerObject = Instantiate(point,incrementalTriangulation.centers[i].GetPosition(),Quaternion.identity);
+                    centerObject.name = "Medh" + i + "_center";
                     goInScene.Add(centerObject);
                     //centerObject.GetComponent<Material>().color = Color.blue;
                     centerObject.AddComponent<CircleCollider2D>();
@@ -298,6 +301,7 @@ public class Controller : MonoBehaviour
     public static Point AddPoint(Vector3 position)
     {
         GameObject go = Instantiate(instance.point);
+        go.name = "Medhi_PointedPoinG";
         go.transform.position = position;
         Point p = new Point(go);
 
@@ -311,6 +315,7 @@ public class Controller : MonoBehaviour
     {
         position.z = posZ;
         GameObject go = Instantiate(point);
+        go.name = "Medhi_PointedPoinG";
         go.transform.position = position;
         Point p = new Point(go);
 

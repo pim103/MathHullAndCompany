@@ -106,7 +106,7 @@ namespace IncrementalHull3D
             {
                 faces.Add(t1);
             }
-            
+
             if ((triangleFound = FindSameTriangle(t2)) != null)
             {
                 triangleFound.isActive = false;
@@ -115,7 +115,7 @@ namespace IncrementalHull3D
             {
                 faces.Add(t2);
             }
-            
+
             if ((triangleFound = FindSameTriangle(t3)) != null)
             {
                 triangleFound.isActive = false;

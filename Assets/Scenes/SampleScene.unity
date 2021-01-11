@@ -262,14 +262,15 @@ MonoBehaviour:
   point: {fileID: 7309468801842498402, guid: 68395e457a9c0ec4db0fd888a344804b, type: 3}
   segment: {fileID: 2053228795446049584, guid: 4160403287fa24c478bcaef688d7b7c5, type: 3}
   voronoiSegment: {fileID: 2053228795446049584, guid: 7481913976a37f14bb0c4ad482552bb3, type: 3}
-  is3D: 1
+  is3D: 0
   generatePoints: 1
   jarvis: 0
   graham: 0
-  incrementalTriangulationBool: 0
+  incrementalTriangulationBool: 1
   delaunay: 0
   voronoi: 0
-  nbPoints: 5
+  showCenterDelaunay: 0
+  nbPoints: 20
 --- !u!114 &754977259
 MonoBehaviour:
   m_ObjectHideFlags: 0
