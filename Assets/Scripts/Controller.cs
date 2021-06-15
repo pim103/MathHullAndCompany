@@ -25,6 +25,11 @@ public class Controller : MonoBehaviour
     [SerializeField] private bool showCenterDelaunay;
 
     [SerializeField] private int nbPoints = 100;
+    
+    [SerializeField] private bool subDivLoop;
+    [SerializeField] MeshFilter meshSubDiv;
+    [SerializeField, Range(1, 4)] int detailsSubDiv = 1;
+    [SerializeField] bool weldSubDiv = false;
 
     public static List<Point> currentPointsInScene;
     private List<GameObject> goInScene;
@@ -74,7 +79,20 @@ public class Controller : MonoBehaviour
             {
                 DrawIncrementalTriangulation();
             }
+
+            if (subDivLoop)
+            {
+                SubdivMesh();
+            }
         }   
+    }
+
+    private void SubdivMesh()
+    {
+        MeshFilter filter = meshSubDiv;
+        Mesh src = filter.mesh;
+        Mesh mesh = LoopSubdiv.LoopSubdivSurfaces.Subdivide(LoopSubdiv.LoopSubdivSurfaces.Weld(src, float.Epsilon, src.bounds.size.x), detailsSubDiv, weldSubDiv, point, true);
+        filter.sharedMesh = mesh;
     }
 
     private void GeneratePointCloud()
