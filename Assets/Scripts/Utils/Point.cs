@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Utils
 {
@@ -6,6 +7,7 @@ namespace Utils
     {
         private Vector3 position;
         private GameObject objectInScene;
+        public bool someProp = false;
 
         public Point(GameObject go)
         {
@@ -33,12 +35,22 @@ namespace Utils
             position.x = x;
             position.y = y;
             position.z = z;
-            objectInScene.transform.position = position;
+
+            if (objectInScene)
+            {
+                objectInScene.transform.position = position;
+            }
         }
 
         public void SetGameObjectName(string name)
         {
             objectInScene.name = name;
+        }
+
+        public List<Edge> FindEdgeWithPoint(List<Edge> edges)
+        {
+            return edges.FindAll(edge =>
+                edge.p1.GetPosition() == position || edge.p2.GetPosition() == position);
         }
     }
 }

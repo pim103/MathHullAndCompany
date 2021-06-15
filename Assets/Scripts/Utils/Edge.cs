@@ -55,13 +55,21 @@ namespace Utils
 
             return normal;
         }
+
+        public List<Edge> GetAdjacentEdges(List<Edge> edges)
+        {
+            return edges.FindAll(edge => edge.p1.GetPosition() == p1.GetPosition() && edge.p2.GetPosition() != p2.GetPosition() || 
+                                         edge.p1.GetPosition() != p1.GetPosition() && edge.p2.GetPosition() == p2.GetPosition() || 
+                                         edge.p1.GetPosition() != p2.GetPosition() && edge.p2.GetPosition() == p1.GetPosition() || 
+                                         edge.p1.GetPosition() == p2.GetPosition() && edge.p2.GetPosition() != p1.GetPosition());
+        }
         
         public Edge FindSameEdges(List<Edge> edges)
         {
             Edge findEdge = edges.Find(
                 eachEdge => 
-                    (eachEdge.p1 == p1 || eachEdge.p2 == p1) && 
-                    (eachEdge.p1 == p2 || eachEdge.p2 == p2));
+                    (eachEdge.p1.GetPosition() == p1.GetPosition() || eachEdge.p2.GetPosition() == p1.GetPosition()) && 
+                    (eachEdge.p1.GetPosition() == p2.GetPosition() || eachEdge.p2.GetPosition() == p2.GetPosition()));
 
             return findEdge;
         }

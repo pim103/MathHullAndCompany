@@ -364,6 +364,7 @@ MonoBehaviour:
   incrementalTriangulationBool: 0
   delaunay: 0
   voronoi: 0
+  kobbelt: 1
   showCenterDelaunay: 0
   nbPoints: 20
   subDivLoop: 1

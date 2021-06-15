@@ -42,6 +42,7 @@ namespace Utils
         public Point interCenter;
         public bool isActive;
         public Vector3 normale;
+        public bool normaleInversed = false;
 
         public Triangle(Point p1, Point p2, Point p3)
         {
@@ -57,7 +58,14 @@ namespace Utils
                 p2 = p3;
                 p3 = temp;
             }
-
+            
+            // Barycenter
+            Vector3 intercenter = Vector3.zero;
+            intercenter.x = (p1.GetPosition().x + p2.GetPosition().x + p3.GetPosition().x) / 3;
+            intercenter.y = (p1.GetPosition().y + p2.GetPosition().y + p3.GetPosition().y) / 3;
+            intercenter.z = (p1.GetPosition().z + p2.GetPosition().z + p3.GetPosition().z) / 3;
+            interCenter = new Point(intercenter);
+            
             this.p1 = p1;
             this.p2 = p2;
             this.p3 = p3;
@@ -70,24 +78,24 @@ namespace Utils
 
         public Triangle(Point p1, Point p2, Point p3, Point centerPoint)
         {
-            
             this.p1 = p1;
             this.p2 = p2;
             this.p3 = p3;
 
+            // Barycenter
             Vector3 intercenter = Vector3.zero;
             intercenter.x = (p1.GetPosition().x + p2.GetPosition().x + p3.GetPosition().x) / 3;
             intercenter.y = (p1.GetPosition().y + p2.GetPosition().y + p3.GetPosition().y) / 3;
             intercenter.z = (p1.GetPosition().z + p2.GetPosition().z + p3.GetPosition().z) / 3;
-
             interCenter = new Point(intercenter);
-            
+
             isActive = true;
             center = new Point(CalculCircleCenter(p1.GetPosition(), p2.GetPosition(), p3.GetPosition()));
             normale = GetNormal();
 
             if (Vector3.Dot(normale, (this.p1.GetPosition() - centerPoint.GetPosition())) < 0)
             {
+                normaleInversed = true;
                 normale *= -1;
             }
         }
@@ -124,6 +132,14 @@ namespace Utils
             return aP0 + v2 * 0.5f + p2 * d;
         }
 
+        public List<Triangle> FindSameTriangle(List<Triangle> triangles)
+        {
+            return triangles.FindAll(triangle =>
+                (triangle.p1.GetPosition() == p1.GetPosition() || triangle.p1.GetPosition() == p2.GetPosition() || triangle.p1.GetPosition() == p3.GetPosition()) &&
+                (triangle.p2.GetPosition() == p1.GetPosition() || triangle.p2.GetPosition() == p2.GetPosition() || triangle.p2.GetPosition() == p3.GetPosition()) &&
+                (triangle.p3.GetPosition() == p1.GetPosition() || triangle.p3.GetPosition() == p2.GetPosition() || triangle.p3.GetPosition() == p3.GetPosition()));
+        }
+
         public List<Edge> GetEdges()
         {
             List<Edge> edges = new List<Edge>
@@ -134,6 +150,14 @@ namespace Utils
             };
 
             return edges;
+        }
+
+        public List<Point> GetPoints()
+        {
+            return new List<Point>
+            {
+                p1, p2, p3
+            };
         }
     }
 }

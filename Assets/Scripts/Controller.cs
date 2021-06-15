@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using GrahamScan;
 using IncrementalHull3D;
 using Jarvis;
+using Kobbelt;
 using Triangulation;
 using UnityEngine;
 using Utils;
@@ -14,6 +16,9 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject segment;
     [SerializeField] private GameObject voronoiSegment;
 
+    [SerializeField] private GameObject initialObject;
+    [SerializeField] private GameObject targetObject;
+    
     [SerializeField] private bool is3D;
 
     [SerializeField] private bool generatePoints;
@@ -22,6 +27,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private bool incrementalTriangulationBool;
     [SerializeField] private bool delaunay;
     [SerializeField] private bool voronoi;
+    [SerializeField] private bool kobbelt;
     [SerializeField] private bool showCenterDelaunay;
 
     [SerializeField] private int nbPoints = 100;
@@ -37,17 +43,57 @@ public class Controller : MonoBehaviour
     private IncrementalTriangulation incrementalTriangulation;
 
     private static Controller instance;
+
+    private static List<Triangle> triangles;
     
     // Start is called before the first frame update
     void Start()
     {
         currentPointsInScene = new List<Point>();
         goInScene = new List<GameObject>();
+        triangles = new List<Triangle>();
 
         instance = this;
 //        RunAlgoWithParameter();
     }
 
+    public void AddTriangle()
+    {
+        if (currentPointsInScene.Count < 3)
+        {
+            return;
+        }
+        
+        Point p1 = currentPointsInScene[currentPointsInScene.Count - 3];
+        Point p2 = currentPointsInScene[currentPointsInScene.Count - 2];
+        Point p3 = currentPointsInScene[currentPointsInScene.Count - 1];
+        
+        triangles.Add(new Triangle(p1, p2, p3));
+    }
+
+    private void CreateTrianglesFromPoint()
+    {
+        List<Point> pointInTriangle = new List<Point>();
+        
+        foreach (Point p in currentPointsInScene.ToArray())
+        {
+            if (pointInTriangle.Contains(p))
+            {
+                continue;
+            }
+
+            IOrderedEnumerable<Point> query = currentPointsInScene.OrderBy(point1 => Vector3.Distance(point1.GetPosition(), p.GetPosition()));
+
+            Point closestP1 = query.ElementAt(1);
+            Point closestP2 = query.ElementAt(2);
+            
+            triangles.Add(new Triangle(p, closestP1, closestP2));
+            pointInTriangle.Add(p);
+            pointInTriangle.Add(closestP1);
+            pointInTriangle.Add(closestP2);
+        }
+    }
+    
     public void RunAlgoWithParameter()
     {
         if (generatePoints)
@@ -85,6 +131,32 @@ public class Controller : MonoBehaviour
                 SubdivMesh();
             }
         }   
+
+            if (kobbelt)
+            {
+                if (initialObject == null)
+                {
+                    KobbeltScript kobbeltScript = new KobbeltScript(triangles);
+                    kobbeltScript.ComputeKobbelt();
+
+                    // DrawEdge(kobbeltScript.GetEdgesComputed());
+                    DrawTriangles(kobbeltScript.GetTrianglesComputed());
+                }
+                else
+                {
+                    // Used in kobbelt scene
+                    Mesh mesh = initialObject.GetComponent<MeshFilter>().mesh;
+                    KobbeltScript kobbeltScript = new KobbeltScript(mesh);
+                    kobbeltScript.ComputeKobbelt();
+
+                    mesh = DrawNewMesh(kobbeltScript.GetTrianglesComputed());
+                    kobbeltScript = new KobbeltScript(mesh);
+                    kobbeltScript.ComputeKobbelt();
+                    
+                    mesh = DrawNewMesh(kobbeltScript.GetTrianglesComputed());
+                }
+            }
+        }
     }
 
     private void SubdivMesh()
@@ -93,6 +165,58 @@ public class Controller : MonoBehaviour
         Mesh src = filter.mesh;
         Mesh mesh = LoopSubdiv.LoopSubdivSurfaces.Subdivide(LoopSubdiv.LoopSubdivSurfaces.Weld(src, float.Epsilon, src.bounds.size.x), detailsSubDiv, weldSubDiv, point, true);
         filter.sharedMesh = mesh;
+    }
+
+    private Mesh DrawNewMesh(List<Triangle> triangles)
+    {
+        List<Vector3> addedPoint = new List<Vector3>();
+        List<int> newTriangles = new List<int>();
+
+        foreach (Triangle t in triangles)
+        {
+            int indexP0 = addedPoint.IndexOf(t.p1.GetPosition());
+            int indexP1 = addedPoint.IndexOf(t.p2.GetPosition());
+            int indexP2 = addedPoint.IndexOf(t.p3.GetPosition());
+
+            if (indexP0 == -1)
+            {
+                indexP0 = addedPoint.Count;
+                addedPoint.Add(t.p1.GetPosition());
+            }
+            if (indexP1 == -1)
+            {
+                indexP1 = addedPoint.Count;
+                addedPoint.Add(t.p2.GetPosition());
+            }
+            if (indexP2 == -1)
+            {
+                indexP2 = addedPoint.Count;
+                addedPoint.Add(t.p3.GetPosition());
+            }
+
+            if (t.normaleInversed)
+            {
+                int temp = indexP1;
+                indexP1 = indexP2;
+                indexP2 = temp;
+            }
+
+            newTriangles.Add(indexP0);
+            newTriangles.Add(indexP1);
+            newTriangles.Add(indexP2);
+        }
+
+        MeshFilter filter = targetObject.GetComponent<MeshFilter>();
+        Mesh source = new Mesh();
+
+        source.vertices = addedPoint.ToArray();
+        source.triangles = newTriangles.ToArray();
+        
+        source.RecalculateNormals();
+        
+        filter.mesh = source;
+
+        return source;
     }
 
     private void GeneratePointCloud()
@@ -212,7 +336,7 @@ public class Controller : MonoBehaviour
 
     private void DrawTriangles(List<Triangle> triangles)
     {
-        bool drawNormale = true;
+        bool drawNormale = false;
         List<Edge> edges = new List<Edge>();
         
         triangles.ForEach(t =>
@@ -314,6 +438,7 @@ public class Controller : MonoBehaviour
         
         currentPointsInScene.Clear();
         goInScene.Clear();
+        triangles.Clear();
     }
 
     public static Point AddPoint(Vector3 position)

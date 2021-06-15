@@ -34,6 +34,11 @@ namespace Manipulation
             {
                 controller.ClearScene();
             }
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                controller.AddTriangle();
+            }
         }
     }
 }
