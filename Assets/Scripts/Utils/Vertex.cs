@@ -19,19 +19,12 @@ namespace Utils
         {
         }
 
-        public Vertex(Vector3 p, int index, GameObject pointGameObject = null, bool display = false)
+        public Vertex(Vector3 p, int index)
         {
-            //Debug.Log("Bruh");
             this.p = p;
             this.index = index;
-            this.edges = new List<Edge3>();
-            this.triangles = new List<Triangle3>();
-            /*if (display)
-            {
-                //GameObject point = Object.Instantiate(pointGameObject);
-                //point.transform.position = p;
-                //Debug.Log(point.transform.position.ToString());
-            }*/
+            edges = new List<Edge3>();
+            triangles = new List<Triangle3>();
         }
 
         public void AddEdge(Edge3 e)

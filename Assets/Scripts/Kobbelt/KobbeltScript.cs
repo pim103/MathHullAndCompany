@@ -79,15 +79,20 @@ namespace Kobbelt
             Point barycenter = triangle.interCenter;
             List<Point> pointsInTriangle = triangle.GetPoints();
 
-            if (newVertices.Find(p => p.GetPosition() == barycenter.GetPosition()) == null)
-            {
-                newVertices.Add(barycenter);
-            }
+            // if (newVertices.Find(p => p.GetPosition() == barycenter.GetPosition()) == null)
+            // {
+            //     newVertices.Add(barycenter);
+            // }
 
             foreach (Point p in pointsInTriangle)
             {
                 Edge e = new Edge(barycenter, p);
-                edges.Add(e);
+
+                if (e.FindSameEdges(edges) == null)
+                {
+                    edges.Add(e);
+                }
+                
             }
         }
 

@@ -29,7 +29,6 @@ namespace LoopSubdiv
             Vector3[] points = source.vertices;
             for (int i = 0, n = points.Length; i < n; i++)
             {
-                //Debug.Log(source.vertices[i]);
                 Vertex v = new Vertex(points[i], i);
                 vertices.Add(v);
             }

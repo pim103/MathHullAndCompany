@@ -16,12 +16,10 @@ namespace Utils
             this.v0 = v0;
             this.v1 = v1;
             this.v2 = v2;
-            Debug.Log("V0:" + v0.p + ", V1:" + v1.p + ", V2:" + v2.p);
 
             this.e0 = e0;
             this.e1 = e1;
             this.e2 = e2;
-            //Debug.Log("E0:" + e0.ept. + ", E1:" + e1.ept.updated + ", E2:" + e2.ept.updated);
         }
 
         public Vertex GetOtherVertex(Edge3 e)

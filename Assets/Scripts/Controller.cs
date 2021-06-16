@@ -5,6 +5,7 @@ using GrahamScan;
 using IncrementalHull3D;
 using Jarvis;
 using Kobbelt;
+using LoopSubdiv;
 using Triangulation;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -165,7 +166,7 @@ public class Controller : MonoBehaviour
     {
         MeshFilter filter = objectToSubDiv.GetComponent<MeshFilter>();
         Mesh src = filter.mesh;
-        Mesh mesh = LoopSubdiv.LoopSubdivSurfaces.Subdivide(LoopSubdiv.LoopSubdivSurfaces.Weld(src, float.Epsilon, src.bounds.size.x), detailsSubDiv, weldSubDiv, point, true);
+        Mesh mesh = LoopSubdivSurfaces.Subdivide(LoopSubdivSurfaces.Weld(src, float.Epsilon, src.bounds.size.x), detailsSubDiv, weldSubDiv);
         filter.sharedMesh = mesh;
     }
 
@@ -215,6 +216,7 @@ public class Controller : MonoBehaviour
         source.triangles = newTriangles.ToArray();
         
         source.RecalculateNormals();
+        source.RecalculateBounds();
         
         filter.mesh = source;
 

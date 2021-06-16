@@ -6,20 +6,20 @@ namespace LoopSubdiv
 {
     public class LoopSubdivSurfaces
     {
-        public static Mesh Subdivide(Mesh src, int details = 1, bool weld = false, GameObject point = null, bool displayPoint = false)
+        public static Mesh Subdivide(Mesh src, int details = 1, bool weld = false)
         {
-            Model model = Subdivide(src, details, point, displayPoint);
+            Model model = Subdivide(src, details);
             Mesh mesh = model.Build(weld);
             return mesh;
         }
         
-        public static Model Subdivide(Mesh src, int details = 1, GameObject point = null, bool displayPoint = false)
+        public static Model Subdivide(Mesh src, int details = 1)
         {
             Model model = new Model(src);
             LoopSubdivSurfaces divider = new LoopSubdivSurfaces();
 
             for (int i = 0; i < details; i++) {
-                model = divider.Divide(model, point, displayPoint);
+                model = divider.Divide(model);
             }
 
             return model;
@@ -37,7 +37,6 @@ namespace LoopSubdiv
             Vector3 max = new Vector3(float.MinValue, float.MinValue, float.MinValue);
             for (int i = 0; i < oldVertices.Length; i++)
             {
-                Debug.Log("X:" + oldVertices[i].x + ", Y:" + oldVertices[i].y+ ", Z:" + oldVertices[i].z);
                 if (oldVertices[i].x < min.x) min.x = oldVertices[i].x;
                 if (oldVertices[i].y < min.y) min.y = oldVertices[i].y;
                 if (oldVertices[i].z < min.z) min.z = oldVertices[i].z;
@@ -118,16 +117,16 @@ namespace LoopSubdiv
             return ne;
         }
 
-        Model Divide(Model model, GameObject point = null, bool displayPoint = false)
+        Model Divide(Model model)
         {
             var nmodel = new Model();
             for (int i = 0, n = model.triangles.Count; i < n; i++)
             {
                 var f = model.triangles[i];
 
-                var ne0 = GetEdgePoint(f.e0, point, displayPoint);
-                var ne1 = GetEdgePoint(f.e1, point, displayPoint);
-                var ne2 = GetEdgePoint(f.e2, point, displayPoint);
+                var ne0 = GetEdgePoint(f.e0);
+                var ne1 = GetEdgePoint(f.e1);
+                var ne2 = GetEdgePoint(f.e2);
 
                 var nv0 = GetVertexPoint(f.v0);
                 var nv1 = GetVertexPoint(f.v1);
@@ -141,21 +140,21 @@ namespace LoopSubdiv
             return nmodel;
         }
 
-        public Vertex GetEdgePoint(Edge3 e, GameObject point = null, bool displayPoint = false)
+        public Vertex GetEdgePoint(Edge3 e)
         {
             if (e.ept != null) return e.ept;
 
             if(e.faces.Count != 2) {
                 // boundary case for edge
                 Vector3 m = (e.a.p + e.b.p) * 0.5f;
-                e.ept = new Vertex(m, e.a.index, point, displayPoint);
+                e.ept = new Vertex(m, e.a.index);
             } else
             {
                 const float alpha = 3f / 8f;
                 const float beta = 1f / 8f;
                 var left = e.faces[0].GetOtherVertex(e);
                 var right = e.faces[1].GetOtherVertex(e);
-                e.ept = new Vertex((e.a.p + e.b.p) * alpha + (left.p + right.p) * beta, e.a.index, point, displayPoint);
+                e.ept = new Vertex((e.a.p + e.b.p) * alpha + (left.p + right.p) * beta, e.a.index);
             }
 
             return e.ept;
@@ -171,7 +170,7 @@ namespace LoopSubdiv
             return adjancies;
         }
 
-        public Vertex GetVertexPoint(Vertex v, GameObject point = null, bool displayPoint = false)
+        public Vertex GetVertexPoint(Vertex v)
         {
             if (v.updated != null) return v.updated;
 
@@ -180,20 +179,20 @@ namespace LoopSubdiv
             if(n < 3)
             {
                 // boundary case for vertex
-                var e0 = v.edges[0].GetOtherVertex(v);
-                var e1 = v.edges[1].GetOtherVertex(v);
+                Vertex e0 = v.edges[0].GetOtherVertex(v);
+                Vertex e1 = v.edges[1].GetOtherVertex(v);
                 const float k0 = (3f / 4f);
                 const float k1 = (1f / 8f);
-                v.updated = new Vertex(k0 * v.p + k1 * (e0.p + e1.p), v.index, point, displayPoint);
+                v.updated = new Vertex(k0 * v.p + k1 * (e0.p + e1.p), v.index);
             } else
             {
                 const float pi2 = Mathf.PI * 2f;
                 const float k0 = (5f / 8f);
                 const float k1 = (3f / 8f);
                 const float k2 = (1f / 4f);
-                var alpha = (n == 3) ? (3f / 16f) : ((1f / n) * (k0 - Mathf.Pow(k1 + k2 * Mathf.Cos(pi2 / n), 2f)));
+                float alpha = (n == 3) ? (3f / 16f) : ((1f / n) * (k0 - Mathf.Pow(k1 + k2 * Mathf.Cos(pi2 / n), 2f)));
 
-                var np = (1f - n * alpha) * v.p;
+                Vector3 np = (1f - n * alpha) * v.p;
 
                 for(int i = 0; i < n; i++)
                 {
@@ -201,7 +200,7 @@ namespace LoopSubdiv
                     np += alpha * adj.p;
                 }
 
-                v.updated = new Vertex(np, v.index, point, displayPoint);
+                v.updated = new Vertex(np, v.index);
             }
 
             return v.updated;
