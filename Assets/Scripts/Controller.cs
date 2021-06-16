@@ -9,6 +9,7 @@ using Triangulation;
 using UnityEngine;
 using Utils;
 using Voronoi;
+using Edge = Utils.Edge;
 
 public class Controller : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class Controller : MonoBehaviour
     [SerializeField, Range(1, 4)] int detailsSubDiv = 1;
     [SerializeField] bool weldSubDiv = false;
 
+    [SerializeField] public GameObject meshToSubdivide;
+    
     public static List<Point> currentPointsInScene;
     private List<GameObject> goInScene;
 

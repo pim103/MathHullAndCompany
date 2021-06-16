@@ -39,6 +39,11 @@ namespace Manipulation
             {
                 controller.AddTriangle();
             }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Catmull.CatmullClark.StartSubdivision(controller.meshToSubdivide,1);
+            }
         }
     }
 }
