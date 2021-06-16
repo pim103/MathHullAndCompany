@@ -369,7 +369,7 @@ MonoBehaviour:
   kobbelt: 1
   showCenterDelaunay: 0
   nbPoints: 20
-  subDivLoop: 1
+  subDivLoop: 0
   meshSubDiv: {fileID: 0}
   detailsSubDiv: 1
   weldSubDiv: 0

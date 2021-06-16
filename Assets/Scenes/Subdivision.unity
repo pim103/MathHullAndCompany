@@ -455,7 +455,7 @@ MonoBehaviour:
   showCenterDelaunay: 0
   nbPoints: 100
   subDivLoop: 0
-  meshSubDiv: {fileID: 0}
+  meshSubDiv: {fileID: 2093283829}
   detailsSubDiv: 1
   weldSubDiv: 0
 --- !u!114 &1817314448
@@ -632,3 +632,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1b9238d822cba24f8ec35dd751f59c0, type: 3}
+--- !u!33 &2093283829 stripped
+MeshFilter:
+  m_CorrespondingSourceObject: {fileID: -5754084199372789682, guid: d1b9238d822cba24f8ec35dd751f59c0, type: 3}
+  m_PrefabInstance: {fileID: 2093283828}
+  m_PrefabAsset: {fileID: 0}

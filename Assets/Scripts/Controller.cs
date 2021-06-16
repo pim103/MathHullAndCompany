@@ -138,8 +138,8 @@ public class Controller : MonoBehaviour
                     KobbeltScript kobbeltScript = new KobbeltScript(triangles);
                     kobbeltScript.ComputeKobbelt();
 
-                    // DrawEdge(kobbeltScript.GetEdgesComputed());
-                    DrawTriangles(kobbeltScript.GetTrianglesComputed());
+                    DrawEdge(kobbeltScript.GetEdgesComputed());
+                    // DrawTriangles(kobbeltScript.GetTrianglesComputed());
                 }
                 else
                 {
