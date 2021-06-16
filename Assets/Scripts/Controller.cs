@@ -130,7 +130,6 @@ public class Controller : MonoBehaviour
             {
                 SubdivMesh();
             }
-        }   
 
             if (kobbelt)
             {
@@ -149,10 +148,6 @@ public class Controller : MonoBehaviour
                     KobbeltScript kobbeltScript = new KobbeltScript(mesh);
                     kobbeltScript.ComputeKobbelt();
 
-                    mesh = DrawNewMesh(kobbeltScript.GetTrianglesComputed());
-                    kobbeltScript = new KobbeltScript(mesh);
-                    kobbeltScript.ComputeKobbelt();
-                    
                     mesh = DrawNewMesh(kobbeltScript.GetTrianglesComputed());
                 }
             }
