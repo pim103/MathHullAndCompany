@@ -7,6 +7,7 @@ using Jarvis;
 using Kobbelt;
 using Triangulation;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 using Voronoi;
 using Edge = Utils.Edge;
@@ -17,8 +18,8 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject segment;
     [SerializeField] private GameObject voronoiSegment;
 
-    [SerializeField] private GameObject initialObject;
-    [SerializeField] private GameObject targetObject;
+    [SerializeField] private GameObject objectToSubDiv;
+    [SerializeField] private GameObject targetObjectSubDiv;
     
     [SerializeField] private bool is3D;
 
@@ -28,18 +29,16 @@ public class Controller : MonoBehaviour
     [SerializeField] private bool incrementalTriangulationBool;
     [SerializeField] private bool delaunay;
     [SerializeField] private bool voronoi;
-    [SerializeField] private bool kobbelt;
     [SerializeField] private bool showCenterDelaunay;
+    [SerializeField] private bool subDivLoop;
+    [SerializeField] private bool subDivCatmullClark;
+    [SerializeField] private bool subDivKobbelt;
 
     [SerializeField] private int nbPoints = 100;
     
-    [SerializeField] private bool subDivLoop;
-    [SerializeField] MeshFilter meshSubDiv;
     [SerializeField, Range(1, 4)] int detailsSubDiv = 1;
     [SerializeField] bool weldSubDiv = false;
 
-    [SerializeField] public GameObject meshToSubdivide;
-    
     public static List<Point> currentPointsInScene;
     private List<GameObject> goInScene;
 
@@ -134,9 +133,14 @@ public class Controller : MonoBehaviour
                 SubdivMesh();
             }
 
-            if (kobbelt)
+            if (subDivCatmullClark)
             {
-                if (initialObject == null)
+                Catmull.CatmullClark.StartSubdivision(objectToSubDiv, detailsSubDiv);
+            }
+
+            if (subDivKobbelt)
+            {
+                if (objectToSubDiv == null)
                 {
                     KobbeltScript kobbeltScript = new KobbeltScript(triangles);
                     kobbeltScript.ComputeKobbelt();
@@ -147,7 +151,7 @@ public class Controller : MonoBehaviour
                 else
                 {
                     // Used in kobbelt scene
-                    Mesh mesh = initialObject.GetComponent<MeshFilter>().mesh;
+                    Mesh mesh = objectToSubDiv.GetComponent<MeshFilter>().mesh;
                     KobbeltScript kobbeltScript = new KobbeltScript(mesh);
                     kobbeltScript.ComputeKobbelt();
 
@@ -159,7 +163,7 @@ public class Controller : MonoBehaviour
 
     private void SubdivMesh()
     {
-        MeshFilter filter = meshSubDiv;
+        MeshFilter filter = objectToSubDiv.GetComponent<MeshFilter>();
         Mesh src = filter.mesh;
         Mesh mesh = LoopSubdiv.LoopSubdivSurfaces.Subdivide(LoopSubdiv.LoopSubdivSurfaces.Weld(src, float.Epsilon, src.bounds.size.x), detailsSubDiv, weldSubDiv, point, true);
         filter.sharedMesh = mesh;
@@ -204,7 +208,7 @@ public class Controller : MonoBehaviour
             newTriangles.Add(indexP2);
         }
 
-        MeshFilter filter = targetObject.GetComponent<MeshFilter>();
+        MeshFilter filter = targetObjectSubDiv.GetComponent<MeshFilter>();
         Mesh source = new Mesh();
 
         source.vertices = addedPoint.ToArray();
